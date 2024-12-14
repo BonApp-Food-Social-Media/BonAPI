@@ -75,9 +75,94 @@ public class User {
     /**
      * Explicit setter for the `id` field to resolve potential issues with Lombok.
      * see commit-msg 14.12.2024
+     * https://github.com/GurkeSchaleSammler/BonAPI/commit/07325998950b426a63a6cbc4328ca4662e71a551
      * @param id The ID to set for the Entity/ Object.
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getResidenceId() {
+        return residenceId;
+    }
+
+    public void setResidenceId(String residenceId) {
+        this.residenceId = residenceId;
+    }
+
+    public String getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+    public void setDateOfCreation(String dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
+
+    public int getSwipedMealCount() {
+        return swipedMealCount;
+    }
+
+    public void setSwipedMealCount(int swipedMealCount) {
+        this.swipedMealCount = swipedMealCount;
+    }
+
+    public int getLikedMealsCount() {
+        return likedMealsCount;
+    }
+
+    public void setLikedMealsCount(int likedMealsCount) {
+        this.likedMealsCount = likedMealsCount;
+    }
+
+    public int getSavedMealCount() {
+        return savedMealCount;
+    }
+
+    public void setSavedMealCount(int savedMealCount) {
+        this.savedMealCount = savedMealCount;
     }
 }

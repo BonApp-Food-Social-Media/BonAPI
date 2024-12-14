@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service class for managing User entities.
@@ -27,8 +26,12 @@ public class BonAPI_User_Service {
      *
      * @param user The User entity to be saved or updated.
      * @return The saved or updated User entity.
+     * @throws IllegalArgumentException if the User or username is null.
      */
     public User saveUser(User user) {
+        if (user == null || user.getUsername() == null) {
+            throw new IllegalArgumentException("User or username cannot be null.");
+        }
         return userRepository.save(user);
     }
 
@@ -45,18 +48,47 @@ public class BonAPI_User_Service {
      * Retrieves a User entity by its ID.
      *
      * @param id The ID of the User entity.
-     * @return An Optional containing the User entity, if found.
+     * @return The User entity if found.
+     * @throws IllegalArgumentException if the ID is null or empty.
+     * @throws RuntimeException if the User with the given ID is not found.
      */
-    public Optional<User> getUserById(String id) {
-        return userRepository.findById(id);
+    public User getUserById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty.");
+        }
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User with ID " + id + " not found."));
     }
 
     /**
      * Deletes a User entity by its ID.
      *
      * @param id The ID of the User entity to delete.
+     * @throws IllegalArgumentException if the ID is null or empty.
+     * @throws RuntimeException if the User with the given ID does not exist.
      */
     public void deleteUserById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty.");
+        }
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User with ID " + id + " does not exist.");
+        }
         userRepository.deleteById(id);
+    }
+
+    /**
+     * Retrieves a User entity by its username.
+     *
+     * @param username The username of the User entity.
+     * @return The User entity if found.
+     * @throws IllegalArgumentException if the username is null or empty.
+     * @throws RuntimeException if the User with the given username is not found.
+     */
+    public User getUserByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty.");
+        }
+        return userRepository.findByUsername(username);
     }
 }

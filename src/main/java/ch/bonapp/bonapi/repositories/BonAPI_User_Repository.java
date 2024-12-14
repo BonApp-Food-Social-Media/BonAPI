@@ -1,133 +1,47 @@
 package ch.bonapp.bonapi.repositories;
 
 import ch.bonapp.bonapi.entities.both.User;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
+/**
+ * Repository interface for managing User entities in MongoDB.
+ * Extends the {@link MongoRepository} interface to provide standard CRUD operations.
+ * Custom query methods can be added as needed.
+ */
 @Repository
-public class BonAPI_User_Repository implements MongoRepository<User, String> {
+public interface BonAPI_User_Repository extends MongoRepository<User, String> {
 
-    @Override
-    public <S extends User> S insert(S entity) {
-        return null;
-    }
+    /**
+     * Finds a User by their username.
+     *
+     * @param username the username to search for.
+     * @return the matching User entity.
+     */
+    User findByUsername(String username);
 
-    @Override
-    public <S extends User> List<S> insert(Iterable<S> entities) {
-        return null;
-    }
+    /**
+     * Finds all Users older than a certain age.
+     *
+     * @param age the minimum age to search for.
+     * @return a list of Users older than the specified age.
+     */
+    List<User> findByAgeGreaterThan(int age);
 
-    @Override
-    public <S extends User> Optional<S> findOne(Example<S> example) {
-        return Optional.empty();
-    }
+    /**
+     * Finds all Users by their residence ID.
+     *
+     * @param residenceId the residence ID to search for.
+     * @return a list of Users in the specified residence.
+     */
+    List<User> findByResidenceId(String residenceId);
 
-    @Override
-    public <S extends User> List<S> findAll(Example<S> example) {
-        return null;
-    }
-
-    @Override
-    public <S extends User> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
-    }
-
-    @Override
-    public <S extends User> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public <S extends User> long count(Example<S> example) {
-        return 0;
-    }
-
-    @Override
-    public <S extends User> boolean exists(Example<S> example) {
-        return false;
-    }
-
-    @Override
-    public <S extends User, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
-    }
-
-    @Override
-    public <S extends User> S save(S entity) {
-        return null;
-    }
-
-    @Override
-    public <S extends User> List<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<User> findById(String s) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(String s) {
-        return false;
-    }
-
-    @Override
-    public List<User> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<User> findAllById(Iterable<String> strings) {
-        return null;
-    }
-
-    @Override
-    public long count() {
-        return 0;
-    }
-
-    @Override
-    public void deleteById(String s) {
-
-    }
-
-    @Override
-    public void delete(User entity) {
-
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends String> strings) {
-
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends User> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
-    }
-
-    @Override
-    public List<User> findAll(Sort sort) {
-        return null;
-    }
-
-    @Override
-    public Page<User> findAll(Pageable pageable) {
-        return null;
-    }
+    /**
+     * Finds all Users sorted by their creation date in descending order.
+     *
+     * @return a list of Users sorted by date of creation.
+     */
+    List<User> findAllByOrderByDateOfCreationDesc();
 }

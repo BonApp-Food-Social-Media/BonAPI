@@ -42,7 +42,7 @@ public class BonAPI_User_Controller {
      */
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable String id) {
-        return userService.getUserById(id);
+        return Optional.ofNullable(userService.getUserById(id));
     }
 
     /**
