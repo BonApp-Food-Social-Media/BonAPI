@@ -34,7 +34,7 @@ public class Foodstyle {
 
     /**
      * Explicit setter for the `id` field to resolve potential issues with Lombok.
-     *
+     * see commit-msg 14.12.2024
      * @param id The ID to set for the Entity/ Object.
      */
     public void setId(String id) {
