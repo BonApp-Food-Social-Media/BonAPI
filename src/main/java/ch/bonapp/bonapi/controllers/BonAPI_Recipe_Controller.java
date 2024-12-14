@@ -42,7 +42,7 @@ public class BonAPI_Recipe_Controller {
      */
     @GetMapping("/{id}")
     public Optional<Recipe> getRecipeById(@PathVariable String id) {
-        return recipeService.getRecipeById(id);
+        return Optional.ofNullable(recipeService.getRecipeById(id));
     }
 
     /**

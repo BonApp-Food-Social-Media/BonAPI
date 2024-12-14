@@ -42,7 +42,7 @@ public class BonAPI_Culinarystyle_Controller {
      */
     @GetMapping("/{id}")
     public Optional<Culinarystyle> getCulinaryStyleById(@PathVariable String id) {
-        return culinaryStyleService.getCulinaryStyleById(id);
+        return Optional.ofNullable(culinaryStyleService.getCulinaryStyleById(id));
     }
 
     /**

@@ -1,132 +1,49 @@
 package ch.bonapp.bonapi.repositories;
 
 import ch.bonapp.bonapi.entities.both.Culinarystyle;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
+/**
+ * Repository interface for managing CulinaryStyle entities in MongoDB.
+ * Extends the {@link MongoRepository} interface to provide standard CRUD operations.
+ * Additional custom query methods can be added as needed.
+ */
 @Repository
-public class BonAPI_Culinarystyle_Repository implements MongoRepository<Culinarystyle, String> {
-    @Override
-    public <S extends Culinarystyle> S insert(S entity) {
-        return null;
-    }
+public interface BonAPI_Culinarystyle_Repository extends MongoRepository<Culinarystyle, String> {
 
-    @Override
-    public <S extends Culinarystyle> List<S> insert(Iterable<S> entities) {
-        return null;
-    }
+    /**
+     * Finds a list of CulinaryStyles by their style.
+     *
+     * @param style the style of the CulinaryStyle to search for.
+     * @return a list of matching CulinaryStyles.
+     */
+    List<Culinarystyle> findByStyle(String style);
 
-    @Override
-    public <S extends Culinarystyle> Optional<S> findOne(Example<S> example) {
-        return Optional.empty();
-    }
+    /**
+     * Finds CulinaryStyles whose descriptions contain a specific keyword, case-insensitive.
+     *
+     * @param keyword the keyword to search for in the description.
+     * @return a list of matching CulinaryStyles.
+     */
+    List<Culinarystyle> findByDescriptionContainingIgnoreCase(String keyword);
 
-    @Override
-    public <S extends Culinarystyle> List<S> findAll(Example<S> example) {
-        return null;
-    }
+    /**
+     * Finds CulinaryStyles by a regex pattern in their style field.
+     *
+     * @param regex the regular expression to use for matching styles.
+     * @return a list of CulinaryStyles matching the regex pattern.
+     */
+    @Query("{ 'style': { $regex: ?0, $options: 'i' } }")
+    List<Culinarystyle> findByStyleRegex(String regex);
 
-    @Override
-    public <S extends Culinarystyle> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
-    }
-
-    @Override
-    public <S extends Culinarystyle> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public <S extends Culinarystyle> long count(Example<S> example) {
-        return 0;
-    }
-
-    @Override
-    public <S extends Culinarystyle> boolean exists(Example<S> example) {
-        return false;
-    }
-
-    @Override
-    public <S extends Culinarystyle, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
-    }
-
-    @Override
-    public <S extends Culinarystyle> S save(S entity) {
-        return null;
-    }
-
-    @Override
-    public <S extends Culinarystyle> List<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<Culinarystyle> findById(String s) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(String s) {
-        return false;
-    }
-
-    @Override
-    public List<Culinarystyle> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<Culinarystyle> findAllById(Iterable<String> strings) {
-        return null;
-    }
-
-    @Override
-    public long count() {
-        return 0;
-    }
-
-    @Override
-    public void deleteById(String s) {
-
-    }
-
-    @Override
-    public void delete(Culinarystyle entity) {
-
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends String> strings) {
-
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Culinarystyle> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
-    }
-
-    @Override
-    public List<Culinarystyle> findAll(Sort sort) {
-        return null;
-    }
-
-    @Override
-    public Page<Culinarystyle> findAll(Pageable pageable) {
-        return null;
-    }
+    /**
+     * Finds all CulinaryStyles sorted by their style in ascending order.
+     *
+     * @return a list of CulinaryStyles sorted by style.
+     */
+    List<Culinarystyle> findAllByOrderByStyleAsc();
 }

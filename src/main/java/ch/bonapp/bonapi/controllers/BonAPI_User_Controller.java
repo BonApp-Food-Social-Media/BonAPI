@@ -3,6 +3,8 @@ package ch.bonapp.bonapi.controllers;
 import ch.bonapp.bonapi.entities.both.User;
 import ch.bonapp.bonapi.services.BonAPI_User_Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Optional;
 
 /**
  * REST Controller for managing User entities.
- * Provides endpoints for CRUD operations.
+ * Provides endpoints for CRUD operations and follower management.
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -38,11 +40,11 @@ public class BonAPI_User_Controller {
      * Retrieves a User entity by its ID.
      *
      * @param id The ID of the User entity.
-     * @return The User entity if found.
+     * @return The User entity if found, wrapped in an Optional.
      */
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable String id) {
-        return userService.getUserById(id);
+        return Optional.ofNullable(userService.getUserById(id));
     }
 
     /**
@@ -77,5 +79,61 @@ public class BonAPI_User_Controller {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable String id) {
         userService.deleteUserById(id);
+    }
+
+    /**
+     * Adds a follower to a User.
+     *
+     * @param userId The ID of the User who is following.
+     * @param followedId The ID of the User to be followed.
+     * @return ResponseEntity with status.
+     */
+    @PostMapping("/{userId}/follow/{followedId}")
+    public ResponseEntity<?> addFollower(@PathVariable String userId, @PathVariable String followedId) {
+        try {
+            userService.addFollower(userId, followedId);
+            return ResponseEntity.ok("Follower added successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Removes a follower from a User.
+     *
+     * @param userId The ID of the User who wants to unfollow.
+     * @param followedId The ID of the User to be unfollowed.
+     * @return ResponseEntity with status.
+     */
+    @DeleteMapping("/{userId}/unfollow/{followedId}")
+    public ResponseEntity<?> removeFollower(@PathVariable String userId, @PathVariable String followedId) {
+        try {
+            userService.removeFollower(userId, followedId);
+            return ResponseEntity.ok("Follower removed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Retrieves all followers of a User.
+     *
+     * @param userId The ID of the User whose followers are to be retrieved.
+     * @return A list of Users who follow the specified User.
+     */
+    @GetMapping("/{userId}/followers")
+    public List<User> getFollowers(@PathVariable String userId) {
+        return userService.getFollowers(userId);
+    }
+
+    /**
+     * Retrieves all followings of a User.
+     *
+     * @param userId The ID of the User whose followings are to be retrieved.
+     * @return A list of Users that the specified User is following.
+     */
+    @GetMapping("/{userId}/followings")
+    public List<User> getFollowings(@PathVariable String userId) {
+        return userService.getFollowings(userId);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service class for managing FoodStyle entities.
@@ -27,8 +26,12 @@ public class BonAPI_Foodstyle_Service {
      *
      * @param foodstyle The FoodStyle entity to be saved or updated.
      * @return The saved or updated FoodStyle entity.
+     * @throws IllegalArgumentException if the FoodStyle or its style is null.
      */
     public Foodstyle saveFoodstyle(Foodstyle foodstyle) {
+        if (foodstyle == null || foodstyle.getStyle() == null) {
+            throw new IllegalArgumentException("Foodstyle or style cannot be null.");
+        }
         return foodstyleRepository.save(foodstyle);
     }
 
@@ -45,18 +48,46 @@ public class BonAPI_Foodstyle_Service {
      * Retrieves a FoodStyle entity by its ID.
      *
      * @param id The ID of the FoodStyle entity.
-     * @return An Optional containing the FoodStyle entity, if found.
+     * @return The FoodStyle entity if found.
+     * @throws IllegalArgumentException if the ID is null or empty.
+     * @throws RuntimeException if the FoodStyle with the given ID is not found.
      */
-    public Optional<Foodstyle> getFoodstyleById(String id) {
-        return foodstyleRepository.findById(id);
+    public Foodstyle getFoodstyleById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty.");
+        }
+        return foodstyleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Foodstyle with ID " + id + " not found."));
     }
 
     /**
      * Deletes a FoodStyle entity by its ID.
      *
      * @param id The ID of the FoodStyle entity to delete.
+     * @throws IllegalArgumentException if the ID is null or empty.
+     * @throws RuntimeException if the FoodStyle with the given ID does not exist.
      */
     public void deleteFoodstyleById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty.");
+        }
+        if (!foodstyleRepository.existsById(id)) {
+            throw new RuntimeException("Foodstyle with ID " + id + " does not exist.");
+        }
         foodstyleRepository.deleteById(id);
+    }
+
+    /**
+     * Searches for FoodStyle entities by their style.
+     *
+     * @param style The style to search for.
+     * @return A list of matching FoodStyle entities.
+     * @throws IllegalArgumentException if the style is null or empty.
+     */
+    public List<Foodstyle> searchByStyle(String style) {
+        if (style == null || style.isEmpty()) {
+            throw new IllegalArgumentException("Style cannot be null or empty.");
+        }
+        return foodstyleRepository.findByStyle(style);
     }
 }

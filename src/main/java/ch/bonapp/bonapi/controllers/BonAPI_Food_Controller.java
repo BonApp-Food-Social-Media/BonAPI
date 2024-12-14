@@ -42,7 +42,7 @@ public class BonAPI_Food_Controller {
      */
     @GetMapping("/{id}")
     public Optional<Food> getFoodById(@PathVariable String id) {
-        return foodService.getFoodById(id);
+        return Optional.ofNullable(foodService.getFoodById(id));
     }
 
     /**
