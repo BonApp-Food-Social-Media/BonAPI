@@ -31,6 +31,8 @@ public class BonAPI_Food_Service {
         if (food == null || food.getName() == null) {
             throw new IllegalArgumentException("Food or food name cannot be null.");
         }
+        System.out.println("Saving food: " + food.getStyleId());
+
         return foodRepository.save(food);
     }
 
