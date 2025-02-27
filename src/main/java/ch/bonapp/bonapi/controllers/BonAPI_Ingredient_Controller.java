@@ -13,7 +13,7 @@ import java.util.Optional;
  * Provides endpoints for CRUD operations.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/ingredient")
 public class BonAPI_Ingredient_Controller {
 
