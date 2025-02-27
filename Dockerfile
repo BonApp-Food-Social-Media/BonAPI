@@ -1,27 +1,26 @@
 #------------------------------------------------------------------------------
 # /**
 #  * @Documented
-#  * This Dockerfile builds and runs a Spring Boot application using Maven and Java 21.
-#  * 
+#  * Dockerfile für eine Spring Boot Anwendung, basierend auf Maven 3.9.4 + Java 21 (Eclipse Temurin).
+#  *
 #  * @since 1.0
-#  * @version 1.1 - Updated to use multi-stage build for smaller final image.
+#  * @version 1.1 - Fix: Verwende existierenden Maven-Tag '3.9.4-eclipse-temurin-21'
 #  */
 #------------------------------------------------------------------------------
 
 # === STAGE 1: Build the application ===
-FROM maven:3.9.1-eclipse-temurin-21 AS builder
+FROM maven:3.9.4-eclipse-temurin-21 AS builder
 
-# Create app directory
 WORKDIR /app
 
-# Copy pom.xml and fetch dependencies
+# Kopiere pom.xml und lade Abhängigkeiten
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy the entire source code
+# Kopiere den Rest des Codes
 COPY src/ ./src/
 
-# Package the application (skipping tests for faster builds)
+# Package die Anwendung
 RUN mvn clean package -DskipTests
 
 # === STAGE 2: Create the runtime container ===
@@ -29,11 +28,7 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-# Copy the built JAR from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose the default Spring Boot port
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
