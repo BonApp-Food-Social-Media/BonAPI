@@ -15,7 +15,7 @@ import java.util.Optional;
  * Provides endpoints for CRUD operations and follower management.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class BonAPI_User_Controller {
 
